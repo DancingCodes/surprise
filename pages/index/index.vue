@@ -77,7 +77,7 @@
 
 <style lang="scss" scoped>
 	.index {
-		padding: 20rpx 20rpx;
+		padding: 20rpx;
 		box-sizing: border-box;
 	}
 </style>

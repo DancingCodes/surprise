@@ -1,5 +1,5 @@
 uni.$u.http.setConfig((config) => {
-	config.baseURL = 'http://127.0.0.1:3004';
+	config.baseURL = 'http://192.168.110.143:3004';
 	return config
 })
 

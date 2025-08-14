@@ -7,12 +7,6 @@
 			}
 		},
 		{
-			"path": "pages/image/image",
-			"style": {
-				"navigationStyle": "custom"
-			}
-		},
-		{
 			"path": "pages/video/video",
 			"style": {
 				"navigationStyle": "custom"
@@ -34,12 +28,7 @@
 			"iconPath": "/static/tabbar/index.png",
 			"selectedIconPath": "/static/tabbar/index-c.png",
 			"text": "首页"
-		}, {
-			"pagePath": "pages/image/image",
-			"iconPath": "/static/tabbar/image.png",
-			"selectedIconPath": "/static/tabbar/image-c.png",
-			"text": "图片"
-		}, {
+		},{
 			"pagePath": "pages/video/video",
 			"iconPath": "/static/tabbar/video.png",
 			"selectedIconPath": "/static/tabbar/video-c.png",
