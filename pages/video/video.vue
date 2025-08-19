@@ -1,87 +1,106 @@
 <template>
-	<view class="video">
-		<u-loading-page :loading="pageLoading" loading-text="玩命加载中" font-size="30rpx"></u-loading-page>
-		<template v-if="!pageLoading">
-			<swiper v-if="videoList.length" class="swiper" vertical @change="swiperChange">
-				<swiper-item v-for="(item,index) in videoList">
-					<video class="swiperItem" :src="item.videoSrc" :id="`video${item.id}`" loop :controls="false"
-						:show-fullscreen-btn="false"></video>
-				</swiper-item>
-			</swiper>
-			<u-empty v-else iconSize="0" text="空空如也" marginTop="500rpx"></u-empty>
-		</template>
-	</view>
+	<div class="video" @touchstart="onTouchStart" @touchend="onTouchEnd">
+		<div class="videoScrollBox" v-for="(i, index) in videoList" :key="i.id" v-show="currentIndex === index">
+			<video class="videoItem" :src="i.videoSrc" :id="`video${i.id}`" loop :controls="false"></video>
+		</div>
+	</div>
 </template>
 
 <script>
-	import {
-		video
-	} from '@/api/index.js'
 	export default {
 		data() {
 			return {
-				pageLoading: true,
 				videoList: [],
-				swiperCurrentId: null
+				currentIndex: 0,
+				startY: 0
 			}
 		},
-		async onLoad() {
-			this.pageLoading = true
-			await this.getVideoList()
-			this.swiperCurrentId = this.videoList[0]?.id
-			this.pageLoading = false
-
-			// #ifdef APP
-			// 默认自动播放第一个
-			if (this.videoList.length) {
-				this.playVideo(0)
-			}
-			// #endif
+		onLoad() {
+			this.getList()
 		},
 		methods: {
-			async getVideoList() {
-				const res = await video()
-				res.data = res.data.map(i => ({
-					videoSrc: i,
+			getList() {
+				const res = [
+					"https://www.w3school.com.cn/i/movie.mp4",
+					"https://media.w3.org/2010/05/sintel/trailer.mp4",
+					"https://media.w3.org/2010/05/bunny/trailer.mp4"
+				]
+
+				this.videoList = res.map(src => ({
 					id: uni.$u.guid(),
+					videoSrc: src,
 					context: null
 				}))
 
-				this.videoList.push(...res.data)
-
 				this.$nextTick(() => {
-					res.data.forEach((item, index) => {
-						item.context = uni.createVideoContext(`video${item.id}`)
+					this.videoList.forEach(i => {
+						i.context = uni.createVideoContext('video' + i.id, this)
 					})
+					// 播放第一个视频
+					this.playVideo(0)
 				})
 			},
+			onTouchStart(e) {
+				this.startY = e.touches[0].clientY
+			},
+			onTouchEnd(e) {
+				const endY = e.changedTouches[0].clientY
+				const diff = endY - this.startY
 
-			swiperChange(e) {
-				// 暂停上一个
-				this.videoList.find(i => i.id === this.swiperCurrentId).context.pause()
-				// 记录当前VideoId
-				this.swiperCurrentId = this.videoList[e.detail.current].id
-				// 播放当前
-				this.videoList.find(i => i.id === this.swiperCurrentId).context.play()
+				if (diff > 50) {
+					// 下滑
+					this.prevVideo()
+				} else if (diff < -50) {
+					// 上滑
+					this.nextVideo()
+				}
+			},
+			nextVideo() {
+				const next = this.currentIndex + 1
+				if (next < this.videoList.length) {
+					this.switchVideo(next)
+				}
+			},
+			prevVideo() {
+				const prev = this.currentIndex - 1
+				if (prev >= 0) {
+					this.switchVideo(prev)
+				}
+			},
+			switchVideo(index) {
+				this.pauseVideo(this.currentIndex)
+				this.currentIndex = index
+				this.playVideo(this.currentIndex)
+			},
+			playVideo(index) {
+				const i = this.videoList[index]
+				if (i?.context) i.context.play()
+			},
+			pauseVideo(index) {
+				const i = this.videoList[index]
+				if (i?.context) i.context.pause()
 			}
 		}
 	}
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 	.video {
 		position: absolute;
-		left: 0;
 		top: 0;
+		left: 0;
 		width: 100%;
 		height: 100%;
-		padding: 20rpx;
-		box-sizing: border-box;
+		overflow: hidden;
 
-		.swiper {
+		.videoScrollBox {
+			width: 100%;
 			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
 
-			.swiperItem {
+			.videoItem {
 				width: 100%;
 				height: 100%;
 			}

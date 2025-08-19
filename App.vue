@@ -1,11 +1,18 @@
 <script>
-	export default {}
+	export default {
+		data() {
+			return {}
+		},
+		onLaunch() {
+		}
+	}
 </script>
 
 <style lang="scss">
-	/* 注意要写在第一行，同时给style标签加入lang="scss"属性 */
+	/* 引入 uView 样式 */
 	@import "@/uni_modules/uview-ui/index.scss";
 
+	// 全局样式
 	body {
 		background-color: #f1f1f1;
 	}
