@@ -1,11 +1,9 @@
 <template>
 	<div class="video">
 		<div class="videoBox" @touchstart="onTouchStart" @touchmove="onTouchMove" @touchend="onTouchEnd">
-			<div class="scrollBox" :class="{Transition: scrollData.isTransition}"
-				:style="{top: `${scrollData.currentPage * -100}%`, transform: `translateY(${scrollData.moveY * -1}px)`}">
-				<div class="videoItem" v-for="i in videoList">
-					<video :src="i.videoSrc" :id="`video${i.id}`" loop :controls="false"></video>
-				</div>
+			<div class="videoItem" v-for="(i,x) in videoList"
+				:style="{top:`${ (x-scrollData.currentPage) * 100}%`,transform: `translateY(${scrollData.moveY * -1}px)`}">
+				<video :src="i.videoSrc" :id="`video${i.id}`" loop :controls="false"></video>
 			</div>
 		</div>
 	</div>
@@ -23,7 +21,6 @@
 					currentPage: 0,
 					startY: 0,
 					moveY: 0,
-					isTransition: false
 				}
 			}
 		},
@@ -53,8 +50,6 @@
 			onTouchStart(e) {
 				// 记录起始值
 				this.scrollData.startY = e.touches[0].clientY
-				// 关闭过渡
-				this.scrollData.isTransition = false
 			},
 			onTouchMove(e) {
 				// 记录偏移量
@@ -63,10 +58,6 @@
 			onTouchEnd() {
 				let currentPage = this.scrollData.currentPage
 				const y = this.scrollData.moveY
-
-				// 开启过渡
-				this.scrollData.isTransition = true
-
 				// 重置滑动偏移量
 				this.scrollData.moveY = 0
 				// 下一个
@@ -86,7 +77,7 @@
 				this.playVideo(currentPage)
 			},
 			playVideo(currentPage) {
-				if(currentPage === this.scrollData.currentPage) {
+				if (currentPage === this.scrollData.currentPage) {
 					return
 				}
 				// 暂停上一个
@@ -118,28 +109,17 @@
 			overflow: hidden;
 			position: relative;
 
-			.scrollBox {
-				height: 300%;
-				display: flex;
-				flex-direction: column;
-				position: relative;
-
-				.videoItem {
+			.videoItem {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				
+				video {
 					width: 100%;
-					flex: 1;
-
-					video {
-						width: 100%;
-						height: 50%;
-						display: block;
-					}
+					height: 100%;
+					display: block;
 				}
 			}
-
-			.Transition {
-				transition: all 0.3s;
-			}
-
 		}
 	}
 </style>
