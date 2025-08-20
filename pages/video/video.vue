@@ -1,25 +1,33 @@
 <template>
+
 	<div class="video">
+		<!-- #ifdef APP-PLUS -->
+		<cover-view class="statusBarBg"></cover-view>
+		<!-- #endif -->
 		<div class="videoBox" @touchstart="onTouchStart" @touchmove="onTouchMove" @touchend="onTouchEnd">
-			<div class="videoItem" v-for="(i,x) in videoList" :key="i.id" :style="{
-					top: `${(x - scrollData.currentPage) * 100}%`,
-					transform: `translateY(${scrollData.moveY * -1}px)`
-				}">
-				<video :src="i.videoSrc" :id="`video${i.id}`" loop :controls="false"></video>
+			<!-- 过渡效果需要优化 -->
+			<div class="scrollBox"
+				:style="{top: `${scrollData.currentPage * -100}%`, transform: `translateY(${scrollData.moveY * -1}px)`}">
+				<div class="videoItem" v-for="i in videoList">
+					<video :src="i.videoSrc" :id="`video${i.id}`" loop :controls="false"></video>
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+	import {
+		video
+	} from '@/api/index.js'
 	export default {
 		data() {
 			return {
 				videoList: [],
 				scrollData: {
-					currentPage: 0,
+					currentPage: 1,
 					startY: 0,
-					moveY: 0,
+					moveY: 0
 				}
 			}
 		},
@@ -42,7 +50,7 @@
 
 				this.$nextTick(() => {
 					this.videoList.forEach(i => {
-						i.context = uni.createVideoContext('video' + i.id)
+						i.context = uni.createVideoContext('video' + i.id, this)
 					})
 				})
 			},
@@ -53,30 +61,22 @@
 				this.scrollData.moveY = this.scrollData.startY - e.changedTouches[0].clientY
 			},
 			onTouchEnd() {
-				let currentPage = this.scrollData.currentPage
 				const y = this.scrollData.moveY
 				this.scrollData.moveY = 0
-
 				if (y >= 100) {
-					if (this.scrollData.currentPage >= this.videoList.length - 1) {
+					if (this.scrollData.currentPage >= 2) {
 						return
 					}
-					currentPage++
+					this.scrollData.currentPage++
 				}
 				if (y <= -100) {
 					if (this.scrollData.currentPage <= 0) {
 						return
 					}
-					currentPage--
+					this.scrollData.currentPage--
 				}
-				this.playVideo(currentPage)
 			},
-			playVideo(currentPage) {
-				if (currentPage === this.scrollData.currentPage) return
-				this.videoList[this.scrollData.currentPage].context.pause()
-				this.scrollData.currentPage = currentPage
-				this.videoList[this.scrollData.currentPage].context.play()
-			}
+			// 播放
 		}
 	}
 </script>
@@ -88,21 +88,41 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
+		overflow: hidden;
+
+		.statusBarBg {
+			position: fixed;
+			left: 0;
+			top: 0;
+			height: var(--status-bar-height);
+			width: 100%;
+			background-color: #fff;
+		}
 
 		.videoBox {
 			height: 100%;
-			overflow: hidden;
-			position: relative;
 
-			.videoItem {
-				position: absolute;
-				width: 100%;
-				height: 100%;
+			.scrollBox {
+				height: 300%;
+				display: flex;
+				flex-direction: column;
+				position: relative;
 
-				video {
-					width: 100%;
-					height: 100%;
-					display: block;
+				.videoItem {
+					flex: 1;
+					display: flex;
+					flex-direction: column;
+					/* #ifdef APP-PLUS */
+					padding-top: var(--status-bar-height);
+					background-color: #000;
+					box-sizing: border-box;
+					/* #endif */
+
+					video {
+						flex: 1;
+						width: 100%;
+						display: block;
+					}
 				}
 			}
 		}
