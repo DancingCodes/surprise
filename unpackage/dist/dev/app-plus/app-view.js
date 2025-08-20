@@ -2765,7 +2765,7 @@ if(false) {}
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../../HBuilderX/HBuilderX/plugins/uniapp-cli/node_modules/css-loader/dist/runtime/api.js */ 16);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "@charset \"UTF-8\";\n/**\n * 这里是uni-app内置的常用样式变量\n *\n * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量\n * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App\n *\n */\n/**\n * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能\n *\n * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件\n */\n/* 颜色变量 */\n/* 行为相关颜色 */\n/* 文字基本颜色 */\n/* 背景颜色 */\n/* 边框颜色 */\n/* 尺寸变量 */\n/* 文字尺寸 */\n/* 图片尺寸 */\n/* Border Radius */\n/* 水平间距 */\n/* 垂直间距 */\n/* 透明度 */\n/* 文章场景相关 */\n.index[data-v-2be84a3c] {\n  padding: 20rpx;\n  padding-top: var(--status-bar-height, 20px);\n  box-sizing: border-box;\n}", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n/**\n * 这里是uni-app内置的常用样式变量\n *\n * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量\n * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App\n *\n */\n/**\n * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能\n *\n * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件\n */\n/* 颜色变量 */\n/* 行为相关颜色 */\n/* 文字基本颜色 */\n/* 背景颜色 */\n/* 边框颜色 */\n/* 尺寸变量 */\n/* 文字尺寸 */\n/* 图片尺寸 */\n/* Border Radius */\n/* 水平间距 */\n/* 垂直间距 */\n/* 透明度 */\n/* 文章场景相关 */\n.index[data-v-2be84a3c] {\n  padding: 20rpx;\n  padding-top: var(--status-bar-height);\n  box-sizing: border-box;\n}", ""]);
 // Exports
 module.exports = exports;
 
@@ -2852,49 +2852,52 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    {
-      staticClass: _vm._$g(0, "sc"),
-      attrs: { _i: 0 },
-      on: {
-        touchstart: function ($event) {
-          return _vm.$handleViewEvent($event)
-        },
-        touchend: function ($event) {
-          return _vm.$handleViewEvent($event)
-        },
-      },
-    },
-    _vm._l(_vm._$g(1, "f"), function (i, index, $20, $30) {
-      return _c(
+    { staticClass: _vm._$g(0, "sc"), attrs: { _i: 0 } },
+    [
+      _c(
         "div",
         {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm._$g("1-" + $30, "v-show"),
-              expression: "_$g((\"1-\"+$30),'v-show')",
+          staticClass: _vm._$g(1, "sc"),
+          attrs: { _i: 1 },
+          on: {
+            touchstart: function ($event) {
+              return _vm.$handleViewEvent($event)
             },
-          ],
-          key: i,
-          staticClass: _vm._$g("1-" + $30, "sc"),
-          attrs: { _i: "1-" + $30 },
+            touchmove: function ($event) {
+              return _vm.$handleViewEvent($event)
+            },
+            touchend: function ($event) {
+              return _vm.$handleViewEvent($event)
+            },
+          },
         },
-        [
-          _c("v-uni-video", {
-            staticClass: _vm._$g("2-" + $30, "sc"),
-            attrs: {
-              src: _vm._$g("2-" + $30, "a-src"),
-              id: _vm._$g("2-" + $30, "a-id"),
-              loop: true,
-              controls: false,
-              _i: "2-" + $30,
+        _vm._l(_vm._$g(2, "f"), function (i, idx, $20, $30) {
+          return _c(
+            "div",
+            {
+              key: i,
+              staticClass: _vm._$g("2-" + $30, "sc"),
+              style: _vm._$g("2-" + $30, "s"),
+              attrs: { _i: "2-" + $30 },
             },
-          }),
-        ],
+            [
+              _c("v-uni-video", {
+                attrs: {
+                  src: _vm._$g("3-" + $30, "a-src"),
+                  id: _vm._$g("3-" + $30, "a-id"),
+                  loop: true,
+                  controls: false,
+                  "object-fit": "cover",
+                  _i: "3-" + $30,
+                },
+              }),
+            ],
+            1
+          )
+        }),
         1
-      )
-    }),
+      ),
+    ],
     1
   )
 }
@@ -2992,7 +2995,7 @@ if(false) {}
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../../HBuilderX/HBuilderX/plugins/uniapp-cli/node_modules/css-loader/dist/runtime/api.js */ 16);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "@charset \"UTF-8\";\n/**\n * 这里是uni-app内置的常用样式变量\n *\n * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量\n * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App\n *\n */\n/**\n * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能\n *\n * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件\n */\n/* 颜色变量 */\n/* 行为相关颜色 */\n/* 文字基本颜色 */\n/* 背景颜色 */\n/* 边框颜色 */\n/* 尺寸变量 */\n/* 文字尺寸 */\n/* 图片尺寸 */\n/* Border Radius */\n/* 水平间距 */\n/* 垂直间距 */\n/* 透明度 */\n/* 文章场景相关 */\n.video[data-v-90a8ca64] {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n}\n.video .videoScrollBox[data-v-90a8ca64] {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  left: 0;\n}\n.video .videoScrollBox .videoItem[data-v-90a8ca64] {\n  width: 100%;\n  height: 100%;\n}", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n/**\n * 这里是uni-app内置的常用样式变量\n *\n * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量\n * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App\n *\n */\n/**\n * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能\n *\n * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件\n */\n/* 颜色变量 */\n/* 行为相关颜色 */\n/* 文字基本颜色 */\n/* 背景颜色 */\n/* 边框颜色 */\n/* 尺寸变量 */\n/* 文字尺寸 */\n/* 图片尺寸 */\n/* Border Radius */\n/* 水平间距 */\n/* 垂直间距 */\n/* 透明度 */\n/* 文章场景相关 */\n.video[data-v-90a8ca64] {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n}\n.video .videoBox[data-v-90a8ca64] {\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n  position: relative;\n}\n.video .videoBox .videoItem[data-v-90a8ca64] {\n  position: absolute;\n  width: 100%;\n  height: 100vh;\n  transition: top 0.3s;\n}\n.video .videoBox .videoItem uni-video[data-v-90a8ca64] {\n  width: 100%;\n  height: 100%;\n  display: block;\n  object-fit: cover;\n}", ""]);
 // Exports
 module.exports = exports;
 

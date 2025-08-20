@@ -79,7 +79,7 @@
 	.index {
 		padding: 20rpx;
 		/* #ifdef APP-PLUS */
-		padding-top: var(--status-bar-height, 20px);
+		padding-top: var(--status-bar-height);
 		/* #endif */
 		box-sizing: border-box;
 	}
