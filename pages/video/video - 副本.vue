@@ -1,8 +1,10 @@
 <template>
 	<div class="video">
 		<div class="videoBox" @touchstart="onTouchStart" @touchmove="onTouchMove" @touchend="onTouchEnd">
-			<div class="videoItem" v-for="(i,x) in videoList"
-				:style="{top:`${ (x-scrollData.currentPage) * 100}%`,transform: `translateY(${scrollData.moveY * -1}px)`}">
+			<div class="videoItem" v-for="(i,x) in videoList" :key="i.id" :style="{
+					top: `${(x - scrollData.currentPage) * 100}%`,
+					transform: `translateY(${scrollData.moveY * -1}px)`
+				}">
 				<video :src="i.videoSrc" :id="`video${i.id}`" loop :controls="false"></video>
 			</div>
 		</div>
@@ -10,9 +12,6 @@
 </template>
 
 <script>
-	import {
-		video
-	} from '@/api/index.js'
 	export default {
 		data() {
 			return {
@@ -43,31 +42,27 @@
 
 				this.$nextTick(() => {
 					this.videoList.forEach(i => {
-						i.context = uni.createVideoContext('video' + i.id, this)
+						i.context = uni.createVideoContext('video' + i.id)
 					})
 				})
 			},
 			onTouchStart(e) {
-				// 记录起始值
 				this.scrollData.startY = e.touches[0].clientY
 			},
 			onTouchMove(e) {
-				// 记录偏移量
 				this.scrollData.moveY = this.scrollData.startY - e.changedTouches[0].clientY
 			},
 			onTouchEnd() {
 				let currentPage = this.scrollData.currentPage
 				const y = this.scrollData.moveY
-				// 重置滑动偏移量
 				this.scrollData.moveY = 0
-				// 下一个
+
 				if (y >= 100) {
 					if (this.scrollData.currentPage >= this.videoList.length - 1) {
 						return
 					}
 					currentPage++
 				}
-				// 上一个
 				if (y <= -100) {
 					if (this.scrollData.currentPage <= 0) {
 						return
@@ -77,14 +72,9 @@
 				this.playVideo(currentPage)
 			},
 			playVideo(currentPage) {
-				if (currentPage === this.scrollData.currentPage) {
-					return
-				}
-				// 暂停上一个
+				if (currentPage === this.scrollData.currentPage) return
 				this.videoList[this.scrollData.currentPage].context.pause()
-				// 记录当前
 				this.scrollData.currentPage = currentPage
-				// 播放当前
 				this.videoList[this.scrollData.currentPage].context.play()
 			}
 		}
@@ -98,11 +88,6 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
-		padding: 20rpx;
-		/* #ifdef APP-PLUS */
-		padding-top: var(--status-bar-height);
-		/* #endif */
-		box-sizing: border-box;
 
 		.videoBox {
 			height: 100%;
@@ -113,7 +98,7 @@
 				position: absolute;
 				width: 100%;
 				height: 100%;
-				
+
 				video {
 					width: 100%;
 					height: 100%;
