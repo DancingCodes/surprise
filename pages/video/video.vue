@@ -50,7 +50,7 @@
 
 				this.$nextTick(() => {
 					this.videoList.forEach(i => {
-						i.context = uni.createVideoContext('video' + i.id, this)
+						i.context = uni.createVideoContext(`video${i.id}`)
 					})
 				})
 			},
@@ -75,8 +75,7 @@
 					}
 					this.scrollData.currentPage--
 				}
-			},
-			// 播放
+			}
 		}
 	}
 </script>
