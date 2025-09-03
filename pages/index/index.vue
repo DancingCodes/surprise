@@ -64,7 +64,7 @@
 								title: "我滴宝贝666！！！",
 							}]
 						})
-					}, 1000)
+					}, 500)
 				}).then(res => {
 					this.noticeData.list = res.data
 				}).finally(() => {

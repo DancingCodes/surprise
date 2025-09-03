@@ -5,9 +5,11 @@
 		<cover-view class="statusBarBg"></cover-view>
 		<!-- #endif -->
 		<div class="videoBox" @touchstart="onTouchStart" @touchmove="onTouchMove" @touchend="onTouchEnd">
-			<!-- 过渡效果需要优化 -->
-			<div class="scrollBox"
-				:style="{top: `${scrollData.currentPage * -100}%`, transform: `translateY(${scrollData.moveY * -1}px)`}">
+			<div class="scrollBox" :style="{
+					height: `${videoList.length * 100}%`,
+					top: `${scrollData.currentPage * -100}%`, 
+					transform: `translateY(${scrollData.moveY * -1}px)`
+				}">
 				<div class="videoItem" v-for="i in videoList">
 					<video :src="i.videoSrc" :id="`video${i.id}`" loop :controls="false"></video>
 				</div>
@@ -28,7 +30,7 @@
 					currentPage: 1,
 					startY: 0,
 					moveY: 0
-				}
+				},
 			}
 		},
 		onLoad() {
@@ -36,21 +38,17 @@
 		},
 		methods: {
 			getList() {
-				const res = [
-					"https://alimov2.a.kwimgs.com/upic/2023/12/21/16/BMjAyMzEyMjExNjEzNDNfMTAyNzY2NDk1MV8xMjAxNzc0MzgyNTdfMV8z_b_B1fa8b1158ae14559830d8ade4f510f02.mp4?clientCacheKey=3x6jqjbe9pye39s_b.mp4&tt=b&di=78e498d6&bp=14214",
-					"https://alimov2.a.kwimgs.com/upic/2023/11/24/11/BMjAyMzExMjQxMTQ1NThfODEwNTYyNjg3XzExNzkxNTA1Mzc3M18xXzM=_b_B8627dfbe86e0f53c3b853aa47b496549.mp4?clientCacheKey=3xn7devj75c23u6_b.mp4&tt=b&di=78e49864&bp=13414",
-					"https://alimov2.a.kwimgs.com/upic/2022/10/16/10/BMjAyMjEwMTYxMDAxMTJfODczNTUwN184NjU1MzgxODQ2OF8xXzM=_b_B622d93ca0b9275a8e533ea16686b9399.mp4?clientCacheKey=3xe59hvcyy2jumi_b.mp4&tt=b&di=78e49e79&bp=13414",
-				]
-
-				this.videoList = res.map(src => ({
-					id: uni.$u.guid(),
-					videoSrc: src,
-					context: null
-				}))
-
-				this.$nextTick(() => {
-					this.videoList.forEach(i => {
-						i.context = uni.createVideoContext(`video${i.id}`)
+				video().then(res => {
+					const list = res.data.map(src => ({
+						id: uni.$u.guid(),
+						videoSrc: src,
+						context: null
+					}))
+					this.videoList.push(...list)
+					this.$nextTick(() => {
+						list.forEach(i => {
+							i.context = uni.createVideoContext(`video${i.id}`)
+						})
 					})
 				})
 			},
@@ -63,17 +61,23 @@
 			onTouchEnd() {
 				const y = this.scrollData.moveY
 				this.scrollData.moveY = 0
+
+
 				if (y >= 100) {
-					if (this.scrollData.currentPage >= 2) {
+					if (this.scrollData.currentPage >= this.videoList.length - 1) {
 						return
 					}
+					this.videoList[this.scrollData.currentPage].context.pause()
 					this.scrollData.currentPage++
+					this.videoList[this.scrollData.currentPage].context.play()
 				}
 				if (y <= -100) {
 					if (this.scrollData.currentPage <= 0) {
 						return
 					}
+					this.videoList[this.scrollData.currentPage].context.pause()
 					this.scrollData.currentPage--
+					this.videoList[this.scrollData.currentPage].context.play()
 				}
 			}
 		}
@@ -87,7 +91,6 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
-		overflow: hidden;
 
 		.statusBarBg {
 			position: fixed;
@@ -102,7 +105,6 @@
 			height: 100%;
 
 			.scrollBox {
-				height: 300%;
 				display: flex;
 				flex-direction: column;
 				position: relative;

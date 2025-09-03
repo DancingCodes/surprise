@@ -1,5 +1,6 @@
 uni.$u.http.setConfig((config) => {
-	config.baseURL = 'http://192.168.110.143:3004';
+	// config.baseURL = 'http://192.168.110.143:3004';
+	config.baseURL = 'https://surpriseapi.moonc.love';
 	return config
 })
 
